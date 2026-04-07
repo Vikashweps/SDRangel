@@ -1,0 +1,220 @@
+---
+- name: Build and install SDRangel
+  hosts: localhost
+  become: true
+  vars:
+    install_path: "{{ install_path }}"
+    install_user: "{{ install_user }}"
+    debug_mode: false  # true для включения режима отладки
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: no
+
+    - name: Install required packages
+      apt:
+        name: 
+          - git 
+          - cmake 
+          - g++ 
+          - pkg-config 
+          - autoconf 
+          - automake 
+          - libtool 
+          - libfftw3-dev 
+          - libusb-1.0-0-dev 
+          - libusb-dev 
+          - libhidapi-dev 
+          - libopengl-dev
+          - qtbase5-dev 
+          - qtchooser 
+          - libqt5multimedia5-plugins 
+          - qtmultimedia5-dev 
+          - libqt5websockets5-dev
+          - qttools5-dev 
+          - qttools5-dev-tools 
+          - libqt5opengl5-dev 
+          - libqt5quick5 
+          - libqt5charts5-dev
+          - qml-module-qtlocation  
+          - qml-module-qtpositioning 
+          - qml-module-qtquick-window2
+          - qml-module-qtquick-dialogs 
+          - qml-module-qtquick-controls 
+          - qml-module-qtquick-controls2 
+          - qml-module-qtquick-layouts
+          - libqt5serialport5-dev 
+          - qtdeclarative5-dev 
+          - qtpositioning5-dev 
+          - qtlocation5-dev 
+          - libqt5texttospeech5-dev
+          - qtwebengine5-dev 
+          - qtbase5-private-dev 
+          - libqt5gamepad5-dev 
+          - libqt5svg5-dev
+          - libfaad-dev 
+          - libflac-dev 
+          - zlib1g-dev 
+          - libboost-all-dev 
+          - libasound2-dev 
+          - pulseaudio 
+          - libopencv-dev 
+          - libxml2-dev 
+          - bison 
+          - flex
+          - ffmpeg 
+          - libavcodec-dev 
+          - libavformat-dev 
+          - libopus-dev 
+          - doxygen 
+          - graphviz
+          - libspeexdsp-dev 
+          - libsamplerate0-dev
+        state: present
+    
+    - name: Создаем директории /opt/build /opt/install/
+      shell: |
+        mkdir -p /opt/build
+        chown {{ install_user }} /opt/build
+        mkdir -p /opt/install
+        chown {{ install_user }} /opt/install
+
+    - name: Clone and install aptdec
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/srcejon/aptdec.git
+        cd aptdec
+        git checkout libaptdec
+        git submodule update --init --recursive
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/aptdec ..
+        make -j16 install
+
+    - name: Clone and install CM265cc
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/f4exb/cm256cc.git
+        cd cm256cc
+        git reset --hard 6f4a51802f5f302577d6d270a9fc0cb7a1ee28ef
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/cm256cc ..
+        make -j16 install
+
+    - name: Clone and install LibDAB
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/srcejon/dab-cmdline
+        cd dab-cmdline/library
+        git checkout msvc
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/libdab ..
+        make -j16 install
+
+    - name: Clone and install MBElib
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/szechyjs/mbelib.git
+        cd mbelib
+        git reset --hard 9a04ed5c78176a9965f3d43f7aa1b1f5330e771f
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/mbelib ..
+        make -j16 install
+
+    - name: Clone and install SerialDV
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/f4exb/serialDV.git
+        cd serialDV
+        git reset --hard "v1.1.4"
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/serialdv ..
+        make -j16 install
+
+    - name: Clone and install DSDcc
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/f4exb/dsdcc.git
+        cd dsdcc
+        git reset --hard "v1.9.5"
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/dsdcc -DUSE_MBELIB=ON -DLIBMBE_INCLUDE_DIR=/opt/install/mbelib/include -DLIBMBE_LIBRARY=/opt/install/mbelib/lib/libmbe.so -DLIBSERIALDV_INCLUDE_DIR=/opt/install/serialdv/include/serialdv -DLIBSERIALDV_LIBRARY=/opt/install/serialdv/lib/libserialdv.so ..
+        make -j16 install
+
+    - name: Clone and install Codec2/FreeDV
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/drowe67/codec2-dev.git codec2
+        cd codec2
+        git reset --hard "v1.0.3"
+        mkdir build_linux; cd build_linux
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/codec2 ..
+        make -j16 install
+
+    - name: Clone and install SGP4
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/dnwrnr/sgp4.git
+        cd sgp4
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/sgp4 ..
+        make -j16 install
+
+    - name: Clone and install SPICE
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/srcejon/cspice-cmake.git
+        cd cspice-cmake
+        git switch msvc
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/cspice ..
+        make -j16 install
+
+    - name: Clone and install LibSigMF
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/f4exb/libsigmf.git
+        cd libsigmf
+        git checkout "new-namespaces"
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/libsigmf .. 
+        make -j16 install
+
+    - name: Clone and install GGMorse
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/ggerganov/ggmorse.git
+        cd ggmorse
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/ggmorse -DGGMORSE_BUILD_TESTS=OFF -DGGMORSE_BUILD_EXAMPLES=OFF ..
+        make -j16 install
+
+    # - name: Clone and install RNnoise
+    #   shell: |
+    #     cd {{ install_path }}
+    #     git clone https://github.com/f4exb/rnnoise
+    #     cd rnnoise
+    #     mkdir build; cd build
+    #     cmake -DCMAKE_INSTALL_PREFIX=/opt/install/rnnoise -DRNN_ENABLE_X86_RTCD=ON ..
+    #     make -j16 install
+
+    - name: Clone and install InmarsatC
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/srcejon/inmarsatc.git
+        cd inmarsatc
+        git switch msvc
+        mkdir build; cd build
+        cmake -DCMAKE_INSTALL_PREFIX=/opt/install/inmarsatc ..
+        make -j16 install
+
+    - name: Clone and install Pluto SDR
+      shell: |
+        cd {{ install_path }}
+        git clone https://github.com/analogdevicesinc/libiio.git
+        cd libiio
+        git reset --hard v0.21
+        mkdir build; cd build
+        cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=/opt/install/libiio -DINSTALL_UDEV_RULE=OFF ..
+        make -j16 install
+    
