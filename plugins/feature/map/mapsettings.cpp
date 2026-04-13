@@ -31,6 +31,7 @@
 const QStringList MapSettings::m_pipeTypes = {
     QStringLiteral("ACARSDemod"),
     QStringLiteral("ADSBDemod"),
+    QStringLiteral("hello"),
     QStringLiteral("AIS"),
     QStringLiteral("APRS"),
     QStringLiteral("APTDemod"),
@@ -50,6 +51,7 @@ const QStringList MapSettings::m_pipeTypes = {
 const QStringList MapSettings::m_pipeURIs = {
     QStringLiteral("sdrangel.channel.acarsdemod"),
     QStringLiteral("sdrangel.channel.adsbdemod"),
+    QStringLiteral("sdrangel.channel.hello"),
     QStringLiteral("sdrangel.feature.ais"),
     QStringLiteral("sdrangel.feature.aprs"),
     QStringLiteral("sdrangel.channel.aptdemod"),

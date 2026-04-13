@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HelloDemodGUI</class>
+ <widget class="QWidget" name="HelloDemodGUI">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>300</width><height>100</height></rect></property>
+  <property name="windowTitle"><string>Hello Plugin</string></property>
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text"><string>🎉 Hello World from SDRangel!</string></property>
+     <property name="alignment"><set>Qt::AlignCenter</set></property>
+     <property name="font"><font><pointsize>16</pointsize><bold>true</bold></font></property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+</ui>

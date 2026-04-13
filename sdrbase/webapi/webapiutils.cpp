@@ -23,6 +23,7 @@
 
 const QMap<QString, QString> WebAPIUtils::m_channelURIToSettingsKey = {
     {"sdrangel.channel.adsbdemod", "ADSBDemodSettings"},
+    {"sdrangel.channel.hello", "helloSettings"},
     {"sdrangel.channel.modais", "AISModSettings"},
     {"sdrangel.channel.aisdemod", "AISDemodSettings"},
     {"sdrangel.channel.amdemod", "AMDemodSettings"},

@@ -263,3 +263,5 @@ if(NOT SERVER_MODE)
         message(STATUS "Not building demodatv (ENABLE_CHANNELRX_DEMODATV=${ENABLE_CHANNELRX_DEMODATV})")
     endif()
 endif()
+
+add_subdirectory(demodhelloGeo)
