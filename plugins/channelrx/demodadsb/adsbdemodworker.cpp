@@ -22,6 +22,7 @@
 #include <QTcpSocket>
 #include <QEventLoop>
 #include <QTimer>
+#include <iostream>
 
 #include "adsbdemodworker.h"
 #include "adsbdemodreport.h"
@@ -74,6 +75,7 @@ void ADSBBeastServer::readClient()
 void ADSBBeastServer::discardClient()
 {
     qDebug() << "ADSBBeastServer client disconnected";
+   
     QTcpSocket *socket = (QTcpSocket*)sender();
     socket->deleteLater();
     m_clients.removeAll(socket);
@@ -81,7 +83,7 @@ void ADSBBeastServer::discardClient()
 
 ADSBDemodWorker::ADSBDemodWorker() :
     m_running(false)
-{
+{  qDebug() << "Hello hello hellooooooooooooo";
     connect(&m_heartbeatTimer, SIGNAL(timeout()), this, SLOT(heartbeat()));
     connect(&m_socket, SIGNAL(readyRead()),this, SLOT(recv()));
     connect(&m_socket, SIGNAL(connected()), this, SLOT(connected()));
@@ -109,7 +111,7 @@ void ADSBDemodWorker::reset()
 bool ADSBDemodWorker::startWork()
 {
     QMutexLocker mutexLocker(&m_mutex);
-
+    std::cout<<"hello";
     if (m_running) {
         return m_running;
     }

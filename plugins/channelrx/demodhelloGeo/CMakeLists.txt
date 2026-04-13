@@ -1,17 +1,12 @@
 project(hello)
 
 set(HELLO_SOURCES
-    demodhelloplugin.cpp
-    # demodhello.cpp
-    # demodhellosettings.cpp
-    # demodhellogui.cpp
+    demodhello.cpp
 )
 
 set(HELLO_HEADERS
-    demodhelloplugin.h
-    # demodhello.h
-    # demodhellosettings.h
-    # demodhellogui.h
+    demodhello.h
+    
 )
 include_directories(
     ${CMAKE_SOURCE_DIR}/swagger/sdrangel/code/qt5/client
@@ -21,17 +16,12 @@ include_directories(
 if(NOT SERVER_MODE)
     set(HELLO_SOURCES
         ${HELLO_SOURCES}
-        demodhelloplugin.cpp
-        demodhello.cpp
-        demodhellosettings.cpp
-        demodhellogui.cpp
+        # demodhellogui.cpp
+        # demodhellogui.ui
     )
     set(HELLO_HEADERS
         ${HELLO_HEADERS}
-        demodhelloplugin.h
-        demodhello.h
-        demodhellosettings.h
-        demodhellogui.h
+        # demodhellogui.h
     )
 
     set(TARGET_NAME ${PLUGINS_PREFIX}hello)

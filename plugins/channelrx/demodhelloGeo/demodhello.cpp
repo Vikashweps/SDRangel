@@ -1,11 +1,5 @@
-#include "demodhello.h"
-#include "demodhellogui.h"
+#include " demodhello.h" 
 
-HelloDemod::HelloDemod(const QString& channelName, PluginAPI* pluginAPI)
-    : ChannelRx(channelName, pluginAPI) {}
-
-HelloDemod::~HelloDemod() {}
-
-ChannelGUI* HelloDemod::createChannelGUI(PluginAPI* pluginAPI) {
-    return new HelloDemodGUI(this, pluginAPI);
+int main(){
+    std::cout<<"hello sibsutis";
 }

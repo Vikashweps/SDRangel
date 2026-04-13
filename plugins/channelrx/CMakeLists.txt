@@ -264,4 +264,4 @@ if(NOT SERVER_MODE)
     endif()
 endif()
 
-add_subdirectory(demodhelloGeo)
+#add_subdirectory(demodhelloGeo)

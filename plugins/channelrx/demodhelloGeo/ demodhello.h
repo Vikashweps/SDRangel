@@ -1,4 +1,6 @@
-#include "demodhello.h"
+#ifndef INCLUDE_HELLO_H
+#define INCLUDE_HELLO_H
+
 #ifndef SERVER_MODE
 #include "demodhellogui.h"
 #endif
